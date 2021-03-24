@@ -1,23 +1,21 @@
 <!--
 title: 'AWS Serverless REST API with DynamoDB store example in Python'
-description: 'This example demonstrates how to setup a RESTful Web Service allowing you to create, list, get, update and delete Todos. DynamoDB is used to store the data.'
+description: 'This example demonstrates how to setup a RESTful Web Service allowing you to create, list, get, update and delete Reviews. DynamoDB is used to store the data.'
 layout: Doc
-framework: v1
+framework: v2
 platform: AWS
 language: Python
-authorLink: 'https://github.com/godfreyhobbs'
-authorName: 'Godfrey Hobbs'
-authorAvatar: 'https://avatars1.githubusercontent.com/u/8434141?v=4&s=140'
+authorName: 'Rosius Ndimofor'
 -->
 # Serverless REST API
 
-This example demonstrates how to setup a [RESTful Web Services](https://en.wikipedia.org/wiki/Representational_state_transfer#Applied_to_web_services) allowing you to create, list, get, update and delete Todos. DynamoDB is used to store the data. This is just an example and of course you could use any data storage as a backend.
+This example demonstrates how to setup a [RESTful Web Services](https://en.wikipedia.org/wiki/Representational_state_transfer#Applied_to_web_services) allowing you to create, list, get, update and delete Reviews. DynamoDB is used to store the data. This is just an example and of course you could use any data storage as a backend.
 
 ## Structure
 
-This service has a separate directory for all the todo operations. For each operation exactly one file exists e.g. `todos/delete.py`. In each of these files there is exactly one function defined.
+This service has a separate directory for all the review operations. For each operation exactly one file exists e.g. `reviews/delete.py`. In each of these files there is exactly one function defined.
 
-The idea behind the `todos` directory is that in case you want to create a service containing multiple resources e.g. users, notes, comments you could do so in the same service. While this is certainly possible you might consider creating a separate service for each resource. It depends on the use-case and your preference.
+The idea behind the `reviews` directory is that in case you want to create a service containing multiple resources e.g. users, notes, comments you could do so in the same service. While this is certainly possible you might consider creating a separate service for each resource. It depends on the use-case and your preference.
 
 ## Use-cases
 
@@ -55,11 +53,11 @@ region: us-east-1
 api keys:
   None
 endpoints:
-  POST - https://45wf34z5yf.execute-api.us-east-1.amazonaws.com/dev/todos
-  GET - https://45wf34z5yf.execute-api.us-east-1.amazonaws.com/dev/todos
-  GET - https://45wf34z5yf.execute-api.us-east-1.amazonaws.com/dev/todos/{id}
-  PUT - https://45wf34z5yf.execute-api.us-east-1.amazonaws.com/dev/todos/{id}
-  DELETE - https://45wf34z5yf.execute-api.us-east-1.amazonaws.com/dev/todos/{id}
+  POST - https://xuie8z3bb5.execute-api.us-east-2.amazonaws.com/dev/reviews
+  GET - https://xuie8z3bb5.execute-api.us-east-2.amazonaws.com/dev/reviews
+  GET - https://xuie8z3bb5.execute-api.us-east-2.amazonaws.com/dev/reviews/{id}
+  PUT - https://xuie8z3bb5.execute-api.us-east-2.amazonaws.com/dev/reviews/{id}}
+  DELETE - https://xuie8z3bb5.execute-api.us-east-2.amazonaws.com/dev/reviews/{id}
 functions:
   serverless-rest-api-with-dynamodb-dev-update: arn:aws:lambda:us-east-1:488110005556:function:serverless-rest-api-with-dynamodb-dev-update
   serverless-rest-api-with-dynamodb-dev-get: arn:aws:lambda:us-east-1:488110005556:function:serverless-rest-api-with-dynamodb-dev-get
@@ -70,56 +68,95 @@ functions:
 
 ## Usage
 
-You can create, retrieve, update, or delete todos with the following commands:
+You can create, retrieve, update, or delete reviews with the following commands:
 
-### Create a Todo
+### Create a Review
 
 ```bash
-curl -X POST https://XXXXXXX.execute-api.us-east-1.amazonaws.com/dev/todos --data '{ "text": "Learn Serverless" }'
+curl -X POST https://xuie8z3bb5.execute-api.us-east-2.amazonaws.com/dev/reviews --data '{ "review": "Building serverless api's with lambda is the bomb" }'
 ```
 
 No output
-
-### List all Todos
+```
+[{
+    "id": "c3713e27-8c7f-11eb-ac95-a35df6ae2dbe",
+    "review": "Building serverless api's with lambda is the bomb",
+    "created_by": "Robin Rendle",
+    "createdAt": "1616576593.2520013",
+    "updatedAt": "1616576593.2520013"
+}]%
+```
+### List all Reviews
 
 ```bash
-curl https://XXXXXXX.execute-api.us-east-1.amazonaws.com/dev/todos
+curl https://xuie8z3bb5.execute-api.us-east-2.amazonaws.com/dev/reviews
 ```
 
 Example output:
 ```bash
-[{"text":"Deploy my first service","id":"ac90feaa11e6-9ede-afdfa051af86","checked":true,"updatedAt":1479139961304},{"text":"Learn Serverless","id":"206793aa11e6-9ede-afdfa051af86","createdAt":1479139943241,"checked":false,"updatedAt":1479139943241}]%
+[ {
+        "createdAt": "1615449754.993765",
+        "id": "237ea687-8240-11eb-a8b9-5b3b9d72af20",
+        "review": "Nostrum minus facere nobis ex dolorem cumque, doloribus ratione",
+        "updatedAt": "1615449754.993765",
+        "created_by": "Vitaly Friedman"
+    },
+    {
+        "createdAt": "1615407814.1735685",
+        "id": "7cd15fc2-81de-11eb-850a-bd37c3ef62fc",
+        "review": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Soluta temporibus ullam cupiditate, provident vero consequuntur. Nostrum minus facere nobis ex dolorem cumque, doloribus ratione, eum deserunt velit in illum maxime.",
+        "updatedAt": "1615407814.1735685",
+        "created_by": "John Lindquist"
+    },
+    {
+        "createdAt": "1616575687.4112144",
+        "id": "a784edcb-8c7d-11eb-b66b-6d561a1dc430",
+        "review": "serverless rest api with python",
+        "updatedAt": "1616575687.4112144",
+        "created_by": "Miriam Suzanne"
+    }]%
 ```
 
-### Get one Todo
+### Get one Review
 
 ```bash
-# Replace the <id> part with a real id from your todos table
-curl https://XXXXXXX.execute-api.us-east-1.amazonaws.com/dev/todos/<id>
+# Replace the <id> part with a real id from your reviews table
+curl https://xuie8z3bb5.execute-api.us-east-2.amazonaws.com/dev/reviews/{id}
 ```
 
 Example Result:
-```bash
-{"text":"Learn Serverless","id":"ee6490d0-aa11e6-9ede-afdfa051af86","createdAt":1479138570824,"checked":false,"updatedAt":1479138570824}%
+```
+[{
+    "id": "c3713e27-8c7f-11eb-ac95-a35df6ae2dbe",
+    "review": "Building serverless api's with lambda is the bomb",
+    "created_by": "Robin Rendle",
+    "createdAt": "1616576593.2520013",
+    "updatedAt": "1616576593.2520013"
+}]%
 ```
 
-### Update a Todo
+### Update a Review
+
+```bash
+# Replace the <id> part with a real id from your review table
+curl -X PUT https://xuie8z3bb5.execute-api.us-east-2.amazonaws.com/dev/reviews/{id} --data '{ "review": "Building serverless api's with Lambda is super fast" }'
+```
+
+```
+[{
+    "id": "c3713e27-8c7f-11eb-ac95-a35df6ae2dbe",
+    "review": "Building serverless api's with Lambda is super fast",
+    "created_by": "Robin Rendle",
+    "createdAt": "1616576593.2520013",
+    "updatedAt": "1616576593.2520013"
+}]%
+```
+
+### Delete a Review
 
 ```bash
 # Replace the <id> part with a real id from your todos table
-curl -X PUT https://XXXXXXX.execute-api.us-east-1.amazonaws.com/dev/todos/<id> --data '{ "text": "Learn Serverless", "checked": true }'
-```
-
-Example Result:
-```bash
-{"text":"Learn Serverless","id":"ee6490d0-aa11e6-9ede-afdfa051af86","createdAt":1479138570824,"checked":true,"updatedAt":1479138570824}%
-```
-
-### Delete a Todo
-
-```bash
-# Replace the <id> part with a real id from your todos table
-curl -X DELETE https://XXXXXXX.execute-api.us-east-1.amazonaws.com/dev/todos/<id>
+curl -X DELETE https://xuie8z3bb5.execute-api.us-east-2.amazonaws.com/dev/reviews/{id}
 ```
 
 No output
